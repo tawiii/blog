@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import Loading from './Loading';
+import {loadBlog} from '../AC';
 
 class ArticlePage extends Component {
 
+  componentDidMount() {
+    const {loadBlog, blog} = this.props;
+    
+    if (blog.defArticles.length === 0) {
+      loadBlog();
+    }
+  }
+
   render() {
     const {match, blog} = this.props;
-    let article;
+    let article = [];
     blog.defArticles.map(item => {
-      item.id == match.params.id ? article = item : null
+      item.id == match.params.id ? article = item : null;
     })
 
     return (
       <div className="wrap">
-        <h3>{article.title}</h3>
-        <p>{article.text}</p>
-        <span>Количество просмотров: {article.views}</span>
+      {blog.isLoading ?
+        <Loading /> :
+        <div>
+          <h3>{article.title}</h3>
+          <p>{article.text}</p>
+          <span>Number of Views: {article.views}</span>
+        </div>
+      }
+        
       </div>
     );
   }
@@ -22,4 +38,4 @@ class ArticlePage extends Component {
 
 export default connect((state) => ({
   blog: state.blog
-}))(ArticlePage)
+}), {loadBlog})(ArticlePage)

@@ -7,15 +7,15 @@ import history from './history'
 
 class Root extends Component {
 
-    render() {
-        return (
-            <Provider store={store}>
-                <Router history={history}>
-                    <App />
-                </Router>
-            </Provider>
-        )
-    }
+  render() {
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <App />
+        </Router>
+      </Provider>
+    )
+  }
 }
 
 export default Root

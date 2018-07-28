@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
-import Article from './Article'
+import {connect} from 'react-redux';
+import Article from './Article';
+import Loading from './Loading';
 import {loadBlog} from '../AC';
 import '../style.css';
 
@@ -9,7 +10,8 @@ class Blog extends Component {
 
   state = {
     articles: [],
-    views: true
+    views: true,
+    activeClass: false 
   }
 
   componentDidMount() {
@@ -36,7 +38,7 @@ class Blog extends Component {
   }
 
   handleSort = (type) => {
-    const {articles} = this.state;
+    const {articles, activeClass} = this.state;
     let isSorted = this.state[type];
     let direction = isSorted ? 1 : -1;
 
@@ -47,12 +49,15 @@ class Blog extends Component {
 
     this.setState({
       articles: sorted,
-      [type]: !isSorted
+      [type]: !isSorted,
+      activeClass: !activeClass
     });
   }
 
   render() {
-    const {articles} = this.state;
+    const {articles, activeClass} = this.state;
+    const {blog} = this.props;
+    const sortClass = activeClass ? 'sort sort_active' : 'sort';
     const articleElements = articles.map(article =>
       <li key={article.id}>
         <Article
@@ -65,22 +70,21 @@ class Blog extends Component {
       <div className="wrap">
         <div className="header">
           <label>
-            Поиск:
+            Search:
             <input
               type="text"
               onChange={this.handleChange}
             />
           </label>        
           <p
-            className="sort"
+            className={sortClass}
             onClick={() => this.handleSort('views')}
           >
-            Сортировать по просмотрам
+            <span className="arrow">⇓</span>
+            Sort by views
           </p>
-        </div>        
-        <ul>
-          {articleElements}
-        </ul>
+        </div>
+        {blog.isLoading ? <Loading /> : <ul>{articleElements}</ul>}
       </div>
     );
   }

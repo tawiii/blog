@@ -7,14 +7,14 @@ class Article extends Component {
     const {article} = this.props
 
     return (
-      <div>
-        <h3>
-          <Link to={`/blog/${article.id}`}>
+      <div>        
+        <Link to={`/blog/${article.id}`}>
+          <h3>
             {article.title}
-          </Link>
-        </h3>        
-        <p>{article.text}</p>
-        <span>Количество просмотров: {article.views}</span>
+          </h3>
+          <p>{article.text}</p>
+          <span>Number of Views: {article.views}</span>
+        </Link>
       </div>
     );
   }
